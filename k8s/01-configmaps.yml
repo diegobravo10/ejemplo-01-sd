@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-tienda
+  namespace: tienda
+data:
+  PRODUCTOS_URL: "http://servicio-productos:8000"

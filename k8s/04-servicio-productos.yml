@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: servicio-productos
+  namespace: tienda
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: servicio-productos
+  template:
+    metadata:
+      labels:
+        app: servicio-productos
+    spec:
+      containers:
+        - name: api
+          image: servicio-productos:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "postgresql+psycopg2://productos:productos@postgres-productos:5432/productos_db"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: servicio-productos
+  namespace: tienda
+spec:
+  selector:
+    app: servicio-productos
+  ports:
+    - port: 8000
+      targetPort: 8000
+  type: ClusterIP

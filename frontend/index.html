@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Productos y Órdenes</title>
+  <style>
+    body{font-family:system-ui,Arial;margin:24px;max-width:1000px}
+    .fila{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .caja{border:1px solid #ddd;border-radius:12px;padding:16px}
+    input,button{padding:10px;border-radius:10px;border:1px solid #ccc}
+    button{cursor:pointer}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border-bottom:1px solid #eee;padding:8px;text-align:left}
+    small{color:#666}
+    .error{color:#b00020}
+    .ok{color:#0a7a2f}
+  </style>
+</head>
+<body>
+  <h1>Frontend: Productos y Órdenes</h1>
+  <p><small>Este frontend llama a los servicios por URL configurada en <code>app.js</code>.</small></p>
+
+  <div class="fila">
+    <div class="caja">
+      <h2>Agregar producto</h2>
+      <div>
+        <input id="nombre" placeholder="Nombre" />
+        <input id="precio" placeholder="Precio (ej: 10.50)" />
+        <input id="stock" placeholder="Stock (ej: 5)" />
+        <button id="btnCrearProducto">Crear</button>
+      </div>
+      <p id="msgProducto"></p>
+      <h3>Lista de productos</h3>
+      <button id="btnRefrescarProductos">Refrescar</button>
+      <div id="tablaProductos"></div>
+    </div>
+
+    <div class="caja">
+      <h2>Crear orden</h2>
+      <div>
+        <input id="producto_id" placeholder="ID de producto" />
+        <input id="cantidad" placeholder="Cantidad" />
+        <button id="btnCrearOrden">Crear orden</button>
+      </div>
+      <p id="msgOrden"></p>
+      <h3>Lista de órdenes</h3>
+      <button id="btnRefrescarOrdenes">Refrescar</button>
+      <div id="tablaOrdenes"></div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

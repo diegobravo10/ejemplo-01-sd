@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: servicio-ordenes
+  namespace: tienda
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: servicio-ordenes
+  template:
+    metadata:
+      labels:
+        app: servicio-ordenes
+    spec:
+      containers:
+        - name: api
+          image: servicio-ordenes:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8001
+          env:
+            - name: DATABASE_URL
+              value: "postgresql+psycopg2://ordenes:ordenes@postgres-ordenes:5432/ordenes_db"
+            - name: PRODUCTOS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: config-tienda
+                  key: PRODUCTOS_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: servicio-ordenes
+  namespace: tienda
+spec:
+  selector:
+    app: servicio-ordenes
+  ports:
+    - port: 8001
+      targetPort: 8001
+  type: ClusterIP

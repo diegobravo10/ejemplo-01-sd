@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secretos-postgres-ordenes
+  namespace: tienda
+type: Opaque
+stringData:
+  POSTGRES_USER: ordenes
+  POSTGRES_PASSWORD: ordenes
+  POSTGRES_DB: ordenes_db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-ordenes
+  namespace: tienda
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-ordenes
+  template:
+    metadata:
+      labels:
+        app: postgres-ordenes
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: secretos-postgres-ordenes
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-ordenes
+  namespace: tienda
+spec:
+  selector:
+    app: postgres-ordenes
+  ports:
+    - port: 5432
+      targetPort: 5432

@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secretos-postgres-productos
+  namespace: tienda
+type: Opaque
+stringData:
+  POSTGRES_USER: productos
+  POSTGRES_PASSWORD: productos
+  POSTGRES_DB: productos_db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-productos
+  namespace: tienda
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-productos
+  template:
+    metadata:
+      labels:
+        app: postgres-productos
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: secretos-postgres-productos
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-productos
+  namespace: tienda
+spec:
+  selector:
+    app: postgres-productos
+  ports:
+    - port: 5432
+      targetPort: 5432
