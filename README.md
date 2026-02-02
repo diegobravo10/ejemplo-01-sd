@@ -148,3 +148,37 @@ kubectl port-forward -n tienda svc/servicio-ordenes 8001:8001
 
 minikube service -n tienda frontend
 ```
+
+## Escalar un microservicio en Kubernetes
+
+Para ver las instancias 
+```
+kubectl get deployments -n tienda
+```
+## Escalar un servicio (forma más rápida)
+### Escalar servicio-productos a 3 instancias
+```
+kubectl scale deployment servicio-productos --replicas=3 -n tienda
+```
+
+### Escalar servicio-ordenes a 2 instancias
+```
+kubectl scale deployment servicio-ordenes --replicas=2 -n tienda
+```
+
+## Ver que los Pods se crearon
+```
+kubectl get pods -n tienda
+```
+
+## Escalado Automatico 
+```
+kubectl autoscale deployment servicio-productos \
+  --cpu-percent=50 \
+  --min=1 \
+  --max=5 \
+  -n tienda
+```
+```
+kubectl get hpa -n tienda
+```
